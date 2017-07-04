@@ -10,7 +10,8 @@
     "material-ui": "^1.0.0-alpha.20",
     "meteor-node-stubs": "~0.2.4",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-swipeable-views": "^0.12.3"
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",

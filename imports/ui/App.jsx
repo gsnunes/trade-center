@@ -1,9 +1,10 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
+
+import Markets from './Markets.jsx';
 
 const styleSheet = createStyleSheet('FullWidthGrid', theme => ({
   root: {
@@ -30,9 +31,7 @@ const App = ({ classes }) =>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
-          <Paper className={classes.paper}>
-            xs=12 sm=3
-          </Paper>
+          <Markets />
         </Grid>
       </Grid>
     </div>
