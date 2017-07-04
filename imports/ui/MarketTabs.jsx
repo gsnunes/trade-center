@@ -13,7 +13,7 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-class Markets extends React.Component {
+class MarketTabs extends React.Component {
   constructor(props) {
     super(props);
 
@@ -39,25 +39,28 @@ class Markets extends React.Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            fullWidth
+            scrollable
+            scrollButtons="auto"
           >
-            <Tab label="Item One" />
-            <Tab label="Item Two" />
-            <Tab label="Item Three" />
+            <Tab label="BTC" />
+            <Tab label="ETH" />
+            <Tab label="XMR" />
+            <Tab label="USDT" />
           </Tabs>
         </AppBar>
         <SwipeableViews index={this.state.index} onChangeIndex={this.handleChangeIndex}>
           <TabContainer>{'Item One'}</TabContainer>
           <TabContainer>{'Item Two'}</TabContainer>
           <TabContainer>{'Item Three'}</TabContainer>
+          <TabContainer>{'Item Four'}</TabContainer>
         </SwipeableViews>
       </div>
     );
   }
 }
 
-Markets.propTypes = {
+MarketTabs.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default Markets;
+export default MarketTabs;

@@ -4,7 +4,7 @@ import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
-import Markets from './Markets.jsx';
+import MarketTabs from './MarketTabs.jsx';
 
 const styleSheet = createStyleSheet('FullWidthGrid', theme => ({
   root: {
@@ -31,7 +31,7 @@ const App = ({ classes }) =>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
-          <Markets />
+          <MarketTabs />
         </Grid>
       </Grid>
     </div>
