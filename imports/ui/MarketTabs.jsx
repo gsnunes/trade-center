@@ -59,8 +59,4 @@ class MarketTabs extends React.Component {
   }
 }
 
-MarketTabs.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
 export default MarketTabs;

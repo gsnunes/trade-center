@@ -25,12 +25,12 @@ const App = ({ classes }) =>
     </header>
     <div className={classes.root}>
       <Grid container gutter={24}>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
             xs=12 sm=9
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4}>
           <MarketTabs />
         </Grid>
       </Grid>
