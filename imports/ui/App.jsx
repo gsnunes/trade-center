@@ -1,33 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
 import Autobahn from 'autobahn';
 import Spinner from 'react-spinkit';
+import AppBar from 'material-ui/AppBar';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
-import CoinTable from './CoinTable.jsx';
+import PreviewTable from './PreviewTable.jsx';
 import MarketTabs from './MarketTabs.jsx';
 
-const styleSheet = createStyleSheet('FullWidthGrid', theme => ({
-  root: {
-    flexGrow: 1,
-    marginTop: 30,
+const styles = {
+  appBar: {
+    marginBottom: '20px',
   },
-  paper: {
-    padding: 16,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
+};
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false };
+    this.state = { open: true, session: null };
   }
 
   componentDidMount() {
-    this.connectionOpen();
+    // this.connectionOpen();
   }
 
   connectionOpen() {
@@ -36,8 +29,8 @@ class App extends React.Component {
       realm: 'realm1',
     });
 
-    connection.onopen = function () {
-      this.setState({ open: true });
+    connection.onopen = (session) => {
+      this.setState({ open: true, session });
     };
 
     connection.open();
@@ -47,20 +40,18 @@ class App extends React.Component {
     return (
       <div>
         {this.state.open ? (
-          <div className="container">
-            <header>
-              <h1>Trade center</h1>
-            </header>
-            <div className={this.props.classes.root}>
-              <Grid container gutter={16}>
-                <Grid item xs={12} sm={8}>
-                  <CoinTable />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <MarketTabs />
-                </Grid>
-              </Grid>
-            </div>
+          <div>
+            <AppBar title="Trade Center" style={styles.appBar} />
+            <Grid fluid>
+              <Row>
+                <Col md={8}>
+                  <PreviewTable />
+                </Col>
+                <Col md={4}>
+                  <MarketTabs session={this.state.session} />
+                </Col>
+              </Row>
+            </Grid>
           </div>
         ) : (
           <Spinner name="line-scale" />
@@ -70,8 +61,4 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styleSheet)(App);
+export default App;

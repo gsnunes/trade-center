@@ -1,61 +1,45 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import AppBar from 'material-ui/AppBar';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import Toolbar from 'material-ui/Toolbar';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
 import MarketTable from './MarketTable.jsx';
-
-const TabContainer = props =>
-  (<div style={{ padding: 24 }}>
-    {props.children}
-  </div>);
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 class MarketTabs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { index: 0 };
+    this.state = { value: 'BTC' };
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeIndex = this.handleChangeIndex.bind(this);
   }
 
-  handleChange(event, index) {
-    this.setState({ index });
-  }
-
-  handleChangeIndex(index) {
-    this.setState({ index });
+  handleChange(value) {
+    this.setState({ value });
   }
 
   render() {
     return (
       <div>
-        <AppBar position="static" color="default">
-          <Tabs
-            index={this.state.index}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            scrollable
-            scrollButtons="auto"
-          >
-            <Tab label="BTC" />
-            <Tab label="ETH" />
-            <Tab label="XMR" />
-            <Tab label="USDT" />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews index={this.state.index} onChangeIndex={this.handleChangeIndex}>
-          <TabContainer><MarketTable /></TabContainer>
-          <TabContainer>{'Item Two'}</TabContainer>
-          <TabContainer>{'Item Three'}</TabContainer>
-          <TabContainer>{'Item Four'}</TabContainer>
-        </SwipeableViews>
+        <Toolbar>
+          <p>Markets</p>
+        </Toolbar>
+
+        <Tabs
+          value={this.state.value}
+          onChange={this.handleChange}
+        >
+          <Tab label="BTC" value="BTC">
+            <MarketTable />
+          </Tab>
+          <Tab label="ETH" value="ETH">
+            <MarketTable />
+          </Tab>
+          <Tab label="XMR" value="XMR">
+            <MarketTable />
+          </Tab>
+          <Tab label="USDT" value="USDT">
+            <MarketTable />
+          </Tab>
+        </Tabs>
       </div>
     );
   }
