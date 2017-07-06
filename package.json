@@ -11,7 +11,9 @@
     "meteor-node-stubs": "~0.2.4",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-swipeable-views": "^0.12.3"
+    "react-spinkit": "^3.0.0",
+    "react-swipeable-views": "^0.12.3",
+    "ws": "^1.1.4"
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",

@@ -4,6 +4,8 @@ import SwipeableViews from 'react-swipeable-views';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
+import MarketTable from './MarketTable.jsx';
+
 const TabContainer = props =>
   (<div style={{ padding: 24 }}>
     {props.children}
@@ -49,7 +51,7 @@ class MarketTabs extends React.Component {
           </Tabs>
         </AppBar>
         <SwipeableViews index={this.state.index} onChangeIndex={this.handleChangeIndex}>
-          <TabContainer>{'Item One'}</TabContainer>
+          <TabContainer><MarketTable /></TabContainer>
           <TabContainer>{'Item Two'}</TabContainer>
           <TabContainer>{'Item Three'}</TabContainer>
           <TabContainer>{'Item Four'}</TabContainer>
