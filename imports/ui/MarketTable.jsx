@@ -1,21 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table, { TableBody, TableHeader, TableRow, TableHeaderColumn, TableRowColumn } from 'material-ui/Table';
+import Table, { TableBody, TableHeader, TableRow, TableHeaderColumn } from 'material-ui/Table';
+
+import MarketTableRow from './MarketTableRow.jsx';
 
 class MarketTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { ticker: [] };
-  }
-
-  componentDidMount() {
-    this.setTicker();
-  }
-
-  setTicker() {
-    this.props.session.subscribe('ticker', (ev) => {
-      this.setState({ ticker: ev });
-    });
+  shouldComponentUpdate() {
+    return true;
   }
 
   render() {
@@ -30,13 +21,9 @@ class MarketTable extends React.Component {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {this.state.ticker.length > 0 &&
-            <TableRow>
-              <TableRowColumn>{this.state.ticker[0]}</TableRowColumn>
-              <TableRowColumn>{this.state.ticker[1]}</TableRowColumn>
-              <TableRowColumn>{this.state.ticker[2]}</TableRowColumn>
-              <TableRowColumn>{this.state.ticker[3]}</TableRowColumn>
-            </TableRow>}
+          {Object.keys(this.props.tickers).map(key =>
+            ((key).substr(0, 3) === this.props.market &&
+              <MarketTableRow ticker={this.props.tickers[key]} currencyPair={key} key={key} />))}
         </TableBody>
       </Table>
     );
@@ -44,7 +31,8 @@ class MarketTable extends React.Component {
 }
 
 MarketTable.propTypes = {
-  session: PropTypes.object.isRequired,
+  tickers: PropTypes.object.isRequired,
+  market: PropTypes.string.isRequired,
 };
 
 export default MarketTable;

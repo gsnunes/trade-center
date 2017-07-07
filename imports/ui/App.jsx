@@ -1,5 +1,6 @@
 import React from 'react';
 import Autobahn from 'autobahn';
+import PropTypes from 'prop-types';
 import Spinner from 'react-spinkit';
 import AppBar from 'material-ui/AppBar';
 import { Grid, Row, Col } from 'react-flexbox-grid';
@@ -17,6 +18,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { open: true, session: null };
+  }
+
+  getChildContext() {
+    return { session: this.state.session };
   }
 
   componentDidMount() {
@@ -48,7 +53,7 @@ class App extends React.Component {
                   <PreviewTable />
                 </Col>
                 <Col md={4}>
-                  <MarketTabs session={this.state.session} />
+                  <MarketTabs />
                 </Col>
               </Row>
             </Grid>
@@ -60,5 +65,9 @@ class App extends React.Component {
     );
   }
 }
+
+App.childContextTypes = {
+  session: PropTypes.object,
+};
 
 export default App;

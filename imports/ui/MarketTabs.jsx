@@ -1,4 +1,5 @@
 import React from 'react';
+import Request from 'browser-request';
 import Toolbar from 'material-ui/Toolbar';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
@@ -8,8 +9,26 @@ class MarketTabs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 'BTC' };
+    this.state = { value: 'BTC', tickers: {} };
+    this.markets = ['BTC', 'ETH', 'XMR', 'USDT'];
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.getTicker();
+  }
+
+  getTicker() {
+    const url = 'https://poloniex.com/public?command=returnTicker';
+
+    Request({
+      url,
+      json: true,
+    }, (error, response, body) => {
+      if (!error && response.statusCode === 200) {
+        this.setState({ tickers: body });
+      }
+    });
   }
 
   handleChange(value) {
@@ -27,18 +46,10 @@ class MarketTabs extends React.Component {
           value={this.state.value}
           onChange={this.handleChange}
         >
-          <Tab label="BTC" value="BTC">
-            <MarketTable />
-          </Tab>
-          <Tab label="ETH" value="ETH">
-            <MarketTable />
-          </Tab>
-          <Tab label="XMR" value="XMR">
-            <MarketTable />
-          </Tab>
-          <Tab label="USDT" value="USDT">
-            <MarketTable />
-          </Tab>
+          {this.markets.map(market => (
+            <Tab label={market} value={market} key={market}>
+              <MarketTable tickers={this.state.tickers} market={market} />
+            </Tab>))}
         </Tabs>
       </div>
     );
