@@ -8,17 +8,28 @@ class MarketTableRow extends React.Component {
     this.state = { ticker: props.ticker };
   }
 
+  componentDidMount() {
+    this.bindEvents();
+  }
+
   bindEvents() {
     this.context.session.subscribe('ticker', (ev) => {
-      if (this.state.ticker[0] === ev[0]) {
-        this.setState({ ticker: ev });
+      if (this.props.currencyPair === ev[0]) {
+        this.setState({ ticker: {
+          last: ev[1],
+          baseVolume: ev[5],
+          percentChange: ev[4],
+        } });
       }
     });
   }
 
   render() {
+    const { ticker, currencyPair, ...other } = this.props;
+
     return (
-      <TableRow>
+      <TableRow {...other}>
+        {other.children[0]}
         <TableRowColumn>{this.props.currencyPair}</TableRowColumn>
         <TableRowColumn>{this.state.ticker.last}</TableRowColumn>
         <TableRowColumn>{this.state.ticker.baseVolume}</TableRowColumn>

@@ -12,12 +12,15 @@ const styles = {
   appBar: {
     marginBottom: '20px',
   },
+  spinnerAlign: {
+    textAlign: 'center',
+  },
 };
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: true, session: null };
+    this.state = { open: false, session: null };
   }
 
   getChildContext() {
@@ -25,13 +28,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // this.connectionOpen();
+    this.connectionOpen();
   }
 
   connectionOpen() {
     const connection = new Autobahn.Connection({
       url: 'wss://api.poloniex.com',
       realm: 'realm1',
+      max_retries: 1,
     });
 
     connection.onopen = (session) => {
@@ -44,22 +48,27 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <AppBar title="Trade Center" style={styles.appBar} />
+
         {this.state.open ? (
-          <div>
-            <AppBar title="Trade Center" style={styles.appBar} />
-            <Grid fluid>
-              <Row>
-                <Col md={8}>
-                  <PreviewTable />
-                </Col>
-                <Col md={4}>
-                  <MarketTabs />
-                </Col>
-              </Row>
-            </Grid>
-          </div>
+          <Grid fluid>
+            <Row>
+              <Col md={8}>
+                <PreviewTable />
+              </Col>
+              <Col md={4}>
+                <MarketTabs />
+              </Col>
+            </Row>
+          </Grid>
         ) : (
-          <Spinner name="line-scale" />
+          <Grid fluid>
+            <Row>
+              <Col md={12} style={styles.spinnerAlign}>
+                <Spinner name="line-scale" />
+              </Col>
+            </Row>
+          </Grid>
         )}
       </div>
     );

@@ -11,7 +11,10 @@ class MarketTable extends React.Component {
 
   render() {
     return (
-      <Table>
+      <Table
+        fixedHeader
+        height="300px"
+      >
         <TableHeader>
           <TableRow>
             <TableHeaderColumn>Coin</TableHeaderColumn>
@@ -20,10 +23,14 @@ class MarketTable extends React.Component {
             <TableHeaderColumn>Change</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody showRowHover>
           {Object.keys(this.props.tickers).map(key =>
             ((key).substr(0, 3) === this.props.market &&
-              <MarketTableRow ticker={this.props.tickers[key]} currencyPair={key} key={key} />))}
+              <MarketTableRow
+                ticker={this.props.tickers[key]}
+                currencyPair={key}
+                key={key}
+              />))}
         </TableBody>
       </Table>
     );

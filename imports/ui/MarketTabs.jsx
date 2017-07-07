@@ -10,7 +10,7 @@ class MarketTabs extends React.Component {
     super(props);
 
     this.state = { value: 'BTC', tickers: {} };
-    this.markets = ['BTC', 'ETH', 'XMR', 'USDT'];
+    this.markets = ['BTC', 'ETH', 'XMR', 'USD'];
     this.handleChange = this.handleChange.bind(this);
   }
 
