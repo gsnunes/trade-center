@@ -1,5 +1,6 @@
 import React from 'react';
 import Request from 'browser-request';
+import Paper from 'material-ui/Paper';
 import Toolbar from 'material-ui/Toolbar';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
@@ -10,7 +11,8 @@ class MarketTabs extends React.Component {
     super(props);
 
     this.state = { value: 'BTC', tickers: {} };
-    this.markets = ['BTC', 'ETH', 'XMR', 'USD'];
+    // this.markets = ['BTC', 'ETH', 'XMR', 'USD'];
+    this.markets = ['BTC'];
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -37,7 +39,7 @@ class MarketTabs extends React.Component {
 
   render() {
     return (
-      <div>
+      <Paper>
         <Toolbar>
           <p>Markets</p>
         </Toolbar>
@@ -51,7 +53,7 @@ class MarketTabs extends React.Component {
               <MarketTable tickers={this.state.tickers} market={market} />
             </Tab>))}
         </Tabs>
-      </div>
+      </Paper>
     );
   }
 }

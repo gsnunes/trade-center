@@ -16,7 +16,7 @@ class PreviewTable extends React.Component {
         </Toolbar>
 
         <Table>
-          <TableHeader>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn>Price/Share</TableHeaderColumn>
               <TableHeaderColumn>Amount</TableHeaderColumn>
@@ -27,7 +27,7 @@ class PreviewTable extends React.Component {
               <TableHeaderColumn>Draw</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody displayRowCheckbox={false}>
             <TableRow>
               <TableRowColumn>0.11500000</TableRowColumn>
               <TableRowColumn>0.43588052</TableRowColumn>
