@@ -2,6 +2,7 @@ import React from 'react';
 import Autobahn from 'autobahn';
 import PropTypes from 'prop-types';
 import Spinner from 'react-spinkit';
+import Request from 'browser-request';
 import AppBar from 'material-ui/AppBar';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
@@ -20,15 +21,29 @@ const styles = {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, session: null };
+    this.state = { open: false, session: null, tickers: {} };
   }
 
   getChildContext() {
-    return { session: this.state.session };
+    return { session: this.state.session, tickers: this.state.tickers };
   }
 
   componentDidMount() {
     this.connectionOpen();
+    this.getTicker();
+  }
+
+  getTicker() {
+    const url = 'https://poloniex.com/public?command=returnTicker';
+
+    Request({
+      url,
+      json: true,
+    }, (error, response, body) => {
+      if (!error && response.statusCode === 200) {
+        this.setState({ tickers: body });
+      }
+    });
   }
 
   connectionOpen() {
@@ -77,6 +92,7 @@ class App extends React.Component {
 
 App.childContextTypes = {
   session: PropTypes.object,
+  tickers: PropTypes.object,
 };
 
 export default App;

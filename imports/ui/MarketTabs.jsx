@@ -1,5 +1,6 @@
 import React from 'react';
-import Request from 'browser-request';
+import _ from 'underscore';
+import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 import Toolbar from 'material-ui/Toolbar';
 import { Tabs, Tab } from 'material-ui/Tabs';
@@ -10,26 +11,22 @@ class MarketTabs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: 'BTC', tickers: {} };
-    // this.markets = ['BTC', 'ETH', 'XMR', 'USD'];
     this.markets = ['BTC'];
+    this.state = { value: 'BTC' };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    this.getTicker();
-  }
+  getMarketTickers(market) {
+    const tickers = _.map(this.context.tickers, ((data, key) => {
+      const ticker = data;
+      ticker.currencyPair = key;
+      ticker.baseVolume = Number(data.baseVolume);
 
-  getTicker() {
-    const url = 'https://poloniex.com/public?command=returnTicker';
+      return ticker;
+    }));
 
-    Request({
-      url,
-      json: true,
-    }, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        this.setState({ tickers: body });
-      }
+    return _.filter(tickers, (data) => {
+      return data.currencyPair.substr(0, 3) === market;
     });
   }
 
@@ -50,12 +47,16 @@ class MarketTabs extends React.Component {
         >
           {this.markets.map(market => (
             <Tab label={market} value={market} key={market}>
-              <MarketTable tickers={this.state.tickers} market={market} />
+              <MarketTable tickers={this.getMarketTickers(market)} />
             </Tab>))}
         </Tabs>
       </Paper>
     );
   }
 }
+
+MarketTabs.contextTypes = {
+  tickers: PropTypes.object,
+};
 
 export default MarketTabs;
