@@ -10,9 +10,9 @@ class MarketTable extends React.Component {
   }
 
   sort() {
-    return _.sortBy(this.props.tickers, ((data) => {
+    return _.sortBy(this.props.tickers, (data) => {
       return data.baseVolume;
-    })).reverse();
+    }).reverse();
   }
 
   render() {

@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'underscore';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 import Toolbar from 'material-ui/Toolbar';
