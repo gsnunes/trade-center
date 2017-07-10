@@ -21,15 +21,14 @@ const styles = {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, session: null, tickers: {} };
+    this.state = { open: false, session: null, tickers: {}, selected: 'BTC_LTC' };
   }
 
   getChildContext() {
-    return { session: this.state.session, tickers: this.state.tickers };
+    return { session: this.state.session, tickers: this.state.tickers, selected: this.state.selected };
   }
 
   componentDidMount() {
-    this.connectionOpen();
     this.getTicker();
   }
 
@@ -41,12 +40,12 @@ class App extends React.Component {
       json: true,
     }, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        this.setState({ tickers: body });
+        this.connectionOpen(body);
       }
     });
   }
 
-  connectionOpen() {
+  connectionOpen(tickers) {
     const connection = new Autobahn.Connection({
       url: 'wss://api.poloniex.com',
       realm: 'realm1',
@@ -54,7 +53,7 @@ class App extends React.Component {
     });
 
     connection.onopen = (session) => {
-      this.setState({ open: true, session });
+      this.setState({ open: true, session, tickers });
     };
 
     connection.open();
@@ -67,6 +66,11 @@ class App extends React.Component {
 
         {this.state.open ? (
           <Grid fluid>
+            <Row>
+              <Col md={12}>
+                <h2>{this.state.selected}</h2>
+              </Col>
+            </Row>
             <Row>
               <Col md={8}>
                 <PreviewTable />
@@ -93,6 +97,7 @@ class App extends React.Component {
 App.childContextTypes = {
   session: PropTypes.object,
   tickers: PropTypes.object,
+  selected: PropTypes.string,
 };
 
 export default App;
