@@ -21,7 +21,7 @@ const styles = {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, session: null, tickers: {}, selected: 'BTC_LTC' };
+    this.state = { open: false, session: null, tickers: {}, selected: 'BTC_ETH' };
   }
 
   getChildContext() {

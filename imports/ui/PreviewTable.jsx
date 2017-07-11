@@ -17,6 +17,8 @@ class PreviewTable extends React.Component {
   bindEvents() {
     this.context.session.subscribe('ticker', (ev) => {
       if (this.context.selected === ev[0]) {
+        document.title = i18n.__('market-title', [`${ev[1]} ${ev[0]}`]);
+
         this.setState({ ticker: {
           last: ev[1],
         } });
