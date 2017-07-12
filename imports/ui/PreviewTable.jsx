@@ -4,14 +4,33 @@ import Table, { TableBody, TableHeaderColumn, TableRowColumn, TableRow, TableHea
 import Toolbar from 'material-ui/Toolbar';
 import Paper from 'material-ui/Paper';
 
+import Utils from '../utils.js';
+
 class PreviewTable extends React.Component {
   constructor(props, context) {
     super(props);
-    this.state = { ticker: context.tickers[context.selected] };
+    this.state = { ticker: context.tickers[context.selected], total: 0.05012625 };
   }
 
   componentDidMount() {
     this.bindEvents();
+  }
+
+  getAmount() {
+    return this.state.total / this.state.ticker.last;
+  }
+
+  getFee() {
+    return (this.getAmount() * Utils.getFee(this.context.selected, 'buy')) / 100;
+  }
+
+  getRealAmount() {
+    return this.getAmount() - this.getFee();
+  }
+
+  getDraw() {
+    const drawBuy = (this.state.ticker.last * this.getAmount()) / this.getRealAmount();
+    return (drawBuy * (this.state.total + ((Utils.getFee(this.context.selected, 'sell') * this.state.total) / 100))) / this.state.total;
   }
 
   bindEvents() {
@@ -38,22 +57,18 @@ class PreviewTable extends React.Component {
             <TableRow>
               <TableHeaderColumn>Price/Share</TableHeaderColumn>
               <TableHeaderColumn>Amount</TableHeaderColumn>
-              <TableHeaderColumn>Fee Total</TableHeaderColumn>
-              <TableHeaderColumn>Amount - Fee</TableHeaderColumn>
-              <TableHeaderColumn>1% / 0.5% (Draw)</TableHeaderColumn>
-              <TableHeaderColumn>2% / 0.5%  (Price)</TableHeaderColumn>
+              <TableHeaderColumn>Real Amount</TableHeaderColumn>
+              <TableHeaderColumn>Fee</TableHeaderColumn>
               <TableHeaderColumn>Draw</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
             <TableRow>
               <TableRowColumn>{this.state.ticker.last}</TableRowColumn>
-              <TableRowColumn>0.43588052</TableRowColumn>
-              <TableRowColumn>0.00065382 ETH (0.15%)</TableRowColumn>
-              <TableRowColumn>0.05012625 BTC</TableRowColumn>
-              <TableRowColumn>0.43522670</TableRowColumn>
-              <TableRowColumn>0.11661529</TableRowColumn>
-              <TableRowColumn>0.11546069</TableRowColumn>
+              <TableRowColumn>{Number(this.getAmount()).toFixed(8)}</TableRowColumn>
+              <TableRowColumn>{Number(this.getRealAmount()).toFixed(8)}</TableRowColumn>
+              <TableRowColumn>{Number(this.getFee()).toFixed(8)} ETH (0.15%)</TableRowColumn>
+              <TableRowColumn>{Number(this.getDraw()).toFixed(8)}</TableRowColumn>
             </TableRow>
           </TableBody>
         </Table>
