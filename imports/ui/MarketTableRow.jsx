@@ -19,9 +19,9 @@ class MarketTableRow extends React.Component {
   }
 
   componentDidUpdate() {
-    setTimeout(() => {
-      this.setState({ color: 'inherit' });
-    }, 2000);
+    // setTimeout(() => {
+    //   this.setState({ color: 'inherit' });
+    // }, 2000);
   }
 
   getColor(last) {
@@ -57,7 +57,7 @@ class MarketTableRow extends React.Component {
           currencyPair: ev[0],
           percentChange: ev[4],
         },
-        color: this.getColor(ev[1]) });
+        color: 'inherit' });
       }
     });
   }
