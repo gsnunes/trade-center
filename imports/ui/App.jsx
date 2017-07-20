@@ -21,11 +21,13 @@ const styles = {
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.changeSelected = this.changeSelected.bind(this);
     this.state = { open: false, session: null, tickers: {}, selected: 'BTC_ETH' };
   }
 
   getChildContext() {
-    return { session: this.state.session, tickers: this.state.tickers, selected: this.state.selected };
+    return { session: this.state.session, tickers: this.state.tickers, selected: this.state.selected, changeSelected: this.changeSelected };
   }
 
   componentDidMount() {
@@ -43,6 +45,10 @@ class App extends React.Component {
         this.connectionOpen(body);
       }
     });
+  }
+
+  changeSelected(selected) {
+    this.setState({ selected });
   }
 
   connectionOpen(tickers) {
@@ -98,6 +104,7 @@ App.childContextTypes = {
   session: PropTypes.object,
   tickers: PropTypes.object,
   selected: PropTypes.string,
+  changeSelected: PropTypes.func,
 };
 
 export default App;

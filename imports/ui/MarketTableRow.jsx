@@ -66,7 +66,7 @@ class MarketTableRow extends React.Component {
     const { ticker, ...other } = this.props;
 
     return (
-      <TableRow {...other} style={{ backgroundColor: this.state.color }} selectable={false}>
+      <TableRow onClick={() => this.context.changeSelected(this.state.ticker.currencyPair)} {...other} style={{ backgroundColor: this.state.color }} selectable={false}>
         {other.children[0]}
         <TableRowColumn>{this.state.ticker.currencyPair}</TableRowColumn>
         <TableRowColumn style={styles.numericColumn}>{this.state.ticker.last}</TableRowColumn>
@@ -83,6 +83,7 @@ MarketTableRow.propTypes = {
 
 MarketTableRow.contextTypes = {
   session: PropTypes.object,
+  changeSelected: PropTypes.func,
 };
 
 export default MarketTableRow;
