@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Spinner from 'react-spinkit';
 import Request from 'browser-request';
 import AppBar from 'material-ui/AppBar';
+import TextField from 'material-ui/TextField';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import PreviewTable from './PreviewTable.jsx';
@@ -23,7 +24,7 @@ class App extends React.Component {
     super(props);
 
     this.changeSelected = this.changeSelected.bind(this);
-    this.state = { open: false, session: null, tickers: {}, selected: 'BTC_ETH' };
+    this.state = { open: false, session: null, tickers: {}, selected: 'BTC_ETH', total: 0.05012625 };
   }
 
   getChildContext() {
@@ -65,6 +66,10 @@ class App extends React.Component {
     connection.open();
   }
 
+  updateInputValue(ev) {
+    this.setState({ total: Number(ev.target.value) });
+  }
+
   render() {
     return (
       <div>
@@ -78,8 +83,18 @@ class App extends React.Component {
               </Col>
             </Row>
             <Row>
+              <Col md={12}>
+                <TextField
+                  id="total"
+                  defaultValue={this.state.total}
+                  floatingLabelText="Total"
+                  onChange={evt => this.updateInputValue(evt)}
+                />
+              </Col>
+            </Row>
+            <Row>
               <Col md={8}>
-                <PreviewTable />
+                <PreviewTable total={this.state.total} />
               </Col>
               <Col md={4}>
                 <MarketTabs />

@@ -17,7 +17,7 @@ const ImportExportIcon = props => (
 class PreviewTable extends React.Component {
   constructor(props, context) {
     super(props);
-    this.state = { ticker: context.tickers[context.selected], total: 0.05012625 };
+    this.state = { ticker: context.tickers[context.selected] };
   }
 
   componentDidMount() {
@@ -25,7 +25,7 @@ class PreviewTable extends React.Component {
   }
 
   getAmount() {
-    return this.state.total / this.state.ticker.last;
+    return this.props.total / this.state.ticker.last;
   }
 
   getFee() {
@@ -38,7 +38,7 @@ class PreviewTable extends React.Component {
 
   getDraw() {
     const drawBuy = (this.state.ticker.last * this.getAmount()) / this.getRealAmount();
-    return (drawBuy * (this.state.total + ((Utils.getFee(this.context.selected, 'sell') * this.state.total) / 100))) / this.state.total;
+    return (drawBuy * (this.props.total + ((Utils.getFee(this.context.selected, 'sell') * this.props.total) / 100))) / this.props.total;
   }
 
   getTargetStop(target, stop) {
@@ -98,6 +98,10 @@ class PreviewTable extends React.Component {
     );
   }
 }
+
+PreviewTable.propTypes = {
+  total: PropTypes.number,
+};
 
 PreviewTable.contextTypes = {
   tickers: PropTypes.object,
