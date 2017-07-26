@@ -6,6 +6,7 @@ import Paper from 'material-ui/Paper';
 import SvgIcon from 'material-ui/SvgIcon';
 
 import Utils from '../utils.js';
+import TargetStopForm from './TargetStopForm.jsx';
 
 const ImportExportIcon = props => (
   <SvgIcon {...props}>
@@ -17,7 +18,7 @@ const ImportExportIcon = props => (
 class PreviewTable extends React.Component {
   constructor(props, context) {
     super(props);
-    this.state = { ticker: context.tickers[context.selected] };
+    this.state = { ticker: context.tickers[context.selected], tradeNow: null };
   }
 
   componentDidMount() {
@@ -42,13 +43,25 @@ class PreviewTable extends React.Component {
   }
 
   getTargetStop(target, stop) {
+    const targetResult = Number(this.getDraw() + ((target * this.getDraw()) / 100)).toFixed(8);
+    const stopResult = Number(this.getDraw() - ((stop * this.getDraw()) / 100)).toFixed(8);
+
     return (<div>
       <div style={{ display: 'inline-block' }}>
-        <div style={{ color: '#27892f' }}>{Number(this.getDraw() + ((target * this.getDraw()) / 100)).toFixed(8)}</div>
-        <div style={{ color: '#c02a1d' }}>{Number(this.getDraw() - ((stop * this.getDraw()) / 100)).toFixed(8)}</div>
+        <div style={{ color: '#27892f' }}>{targetResult}</div>
+        <div style={{ color: '#c02a1d' }}>{stopResult}</div>
       </div>
-      <ImportExportIcon style={{ cursor: 'pointer' }} />
+      <ImportExportIcon style={{ cursor: 'pointer' }} onClick={() => this.tradeNow(targetResult, stopResult)} />
     </div>);
+  }
+
+  tradeNow(targetResult, stopResult) {
+    this.setState({ tradeNow: {
+      amount: Number(this.getAmount()).toFixed(8),
+      total: this.props.total,
+      targetResult,
+      stopResult,
+    } });
   }
 
   bindEvents() {
@@ -64,37 +77,42 @@ class PreviewTable extends React.Component {
   }
 
   render() {
+    cl(this.state.tradeNow);
+    
     return (
-      <Paper>
-        <Toolbar>
-          <p>Trade preview</p>
-        </Toolbar>
+      <div>
+        <Paper>
+          <Toolbar>
+            <p>Trade preview</p>
+          </Toolbar>
 
-        <Table>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn>Price/Share</TableHeaderColumn>
-              <TableHeaderColumn>Amount</TableHeaderColumn>
-              <TableHeaderColumn>Real Amount</TableHeaderColumn>
-              <TableHeaderColumn>Fee</TableHeaderColumn>
-              <TableHeaderColumn>Draw</TableHeaderColumn>
-              <TableHeaderColumn>1% / 0.5% (Draw)</TableHeaderColumn>
-              <TableHeaderColumn>2% / 1% (Draw)</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false}>
-            <TableRow>
-              <TableRowColumn>{this.state.ticker.last}</TableRowColumn>
-              <TableRowColumn>{Number(this.getAmount()).toFixed(8)}</TableRowColumn>
-              <TableRowColumn>{Number(this.getRealAmount()).toFixed(8)}</TableRowColumn>
-              <TableRowColumn>{Number(this.getFee()).toFixed(8)} ETH (0.15%)</TableRowColumn>
-              <TableRowColumn>{Number(this.getDraw()).toFixed(8)}</TableRowColumn>
-              <TableRowColumn>{this.getTargetStop(1, 0.5)}</TableRowColumn>
-              <TableRowColumn>{this.getTargetStop(2, 1)}</TableRowColumn>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Paper>
+          <Table>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+              <TableRow>
+                <TableHeaderColumn>Price/Share</TableHeaderColumn>
+                <TableHeaderColumn>Amount</TableHeaderColumn>
+                <TableHeaderColumn>Real Amount</TableHeaderColumn>
+                <TableHeaderColumn>Fee</TableHeaderColumn>
+                <TableHeaderColumn>Draw</TableHeaderColumn>
+                <TableHeaderColumn>1% / 0.5% (Draw)</TableHeaderColumn>
+                <TableHeaderColumn>2% / 1% (Draw)</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody displayRowCheckbox={false}>
+              <TableRow>
+                <TableRowColumn>{this.state.ticker.last}</TableRowColumn>
+                <TableRowColumn>{Number(this.getAmount()).toFixed(8)}</TableRowColumn>
+                <TableRowColumn>{Number(this.getRealAmount()).toFixed(8)}</TableRowColumn>
+                <TableRowColumn>{Number(this.getFee()).toFixed(8)} ETH (0.15%)</TableRowColumn>
+                <TableRowColumn>{Number(this.getDraw()).toFixed(8)}</TableRowColumn>
+                <TableRowColumn>{this.getTargetStop(1, 0.5)}</TableRowColumn>
+                <TableRowColumn>{this.getTargetStop(2, 1)}</TableRowColumn>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Paper>
+        <TargetStopForm tradeNow={this.state.tradeNow} />
+      </div>
     );
   }
 }
