@@ -77,8 +77,6 @@ class PreviewTable extends React.Component {
   }
 
   render() {
-    cl(this.state.tradeNow);
-    
     return (
       <div>
         <Paper>
