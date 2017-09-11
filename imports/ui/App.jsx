@@ -9,6 +9,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import PreviewTable from './PreviewTable.jsx';
 import MarketTabs from './MarketTabs.jsx';
+import Utils from '../utils.js';
 
 const styles = {
   appBar: {
@@ -43,7 +44,8 @@ class App extends React.Component {
       json: true,
     }, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        this.connectionOpen(body);
+        // this.connectionOpen(body);
+        this.setState({ open: true, session: Utils.fakeSession, tickers: body });
       }
     });
   }

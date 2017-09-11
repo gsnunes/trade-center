@@ -1,5 +1,9 @@
 module.exports = {
 
+  fakeSession: {
+    subscribe: () => true,
+  },
+
   getFee: (market, type) => {
     let fee = [];
 

@@ -6,7 +6,6 @@ import Paper from 'material-ui/Paper';
 import SvgIcon from 'material-ui/SvgIcon';
 
 import Utils from '../utils.js';
-import TradeContainer from './TradeContainer.jsx';
 
 const ImportExportIcon = props => (
   <SvgIcon {...props}>
@@ -15,7 +14,7 @@ const ImportExportIcon = props => (
   </SvgIcon>
 );
 
-class PreviewTable extends React.Component {
+class OrderTable extends React.Component {
   constructor(props, context) {
     super(props);
     this.state = { ticker: context.tickers[context.selected], tradeNow: null };
@@ -81,48 +80,44 @@ class PreviewTable extends React.Component {
       <div>
         <Paper>
           <Toolbar>
-            <p>Trade preview</p>
+            <p>Orders</p>
           </Toolbar>
-
           <Table>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
-                <TableHeaderColumn>Price/Share</TableHeaderColumn>
-                <TableHeaderColumn>Amount</TableHeaderColumn>
-                <TableHeaderColumn>Real Amount</TableHeaderColumn>
-                <TableHeaderColumn>Fee</TableHeaderColumn>
-                <TableHeaderColumn>Draw</TableHeaderColumn>
-                <TableHeaderColumn>1% / 0.5% (Draw)</TableHeaderColumn>
-                <TableHeaderColumn>2% / 1% (Draw)</TableHeaderColumn>
+                <TableHeaderColumn>Market</TableHeaderColumn>
+                <TableHeaderColumn>Type</TableHeaderColumn>
+                <TableHeaderColumn>Qty</TableHeaderColumn>
+                <TableHeaderColumn>Price</TableHeaderColumn>
+                <TableHeaderColumn>Status</TableHeaderColumn>
+                <TableHeaderColumn>Time</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
               <TableRow>
-                <TableRowColumn>{this.state.ticker.last}</TableRowColumn>
-                <TableRowColumn>{Number(this.getAmount()).toFixed(8)}</TableRowColumn>
-                <TableRowColumn>{Number(this.getRealAmount()).toFixed(8)}</TableRowColumn>
-                <TableRowColumn>{Number(this.getFee()).toFixed(8)} ETH (0.15%)</TableRowColumn>
-                <TableRowColumn>{Number(this.getDraw()).toFixed(8)}</TableRowColumn>
-                <TableRowColumn>{this.getTargetStop(1, 0.5)}</TableRowColumn>
-                <TableRowColumn>{this.getTargetStop(2, 1)}</TableRowColumn>
+                <TableRowColumn>{0}</TableRowColumn>
+                <TableRowColumn>{1}</TableRowColumn>
+                <TableRowColumn>{2}</TableRowColumn>
+                <TableRowColumn>{3}</TableRowColumn>
+                <TableRowColumn>{4}</TableRowColumn>
+                <TableRowColumn>{5}</TableRowColumn>
               </TableRow>
             </TableBody>
           </Table>
         </Paper>
-        <TradeContainer ticker={this.state.ticker} />
       </div>
     );
   }
 }
 
-PreviewTable.propTypes = {
+OrderTable.propTypes = {
   total: PropTypes.number,
 };
 
-PreviewTable.contextTypes = {
+OrderTable.contextTypes = {
   tickers: PropTypes.object,
   session: PropTypes.object,
   selected: PropTypes.string,
 };
 
-export default PreviewTable;
+export default OrderTable;

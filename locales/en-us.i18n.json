@@ -1,4 +1,14 @@
 {
 	"title": "Trade Center",
-	"market-title": "{$0} Market - Trade Center"
+	"marketTitle": "{$0} Market - Trade Center",
+	"buy": "Buy {$0}",
+	"sell": "Sell {$0}",
+	"stopPrice": "Stop Price",
+	"toSpend": "{$0} to spend",
+	"toSell": "{$0} to sell",
+	"btcPricePer": "BTC Price per {$0}",
+	"toBuy": "{$0} to buy",
+	"toReceive": "{$0} to receive",
+	"buyNow": "Buy Now",
+	"sellNow": "Sell Now"
 }
