@@ -50,7 +50,7 @@ class TradeContainer extends React.Component {
               <TradeForm type={this.state.type} action="SELL" />
             </Col>
           </Row>
-          <Row style={{marginTop: '20px'}}>
+          <Row style={{ marginTop: '20px' }}>
             <Col md={12}>
               <OrderTable total={0} />
             </Col>

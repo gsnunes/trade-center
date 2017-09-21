@@ -1,78 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table, { TableBody, TableHeaderColumn, TableRowColumn, TableRow, TableHeader } from 'material-ui/Table';
+import Table, { TableBody, TableHeaderColumn, TableRow, TableHeader } from 'material-ui/Table';
 import Toolbar from 'material-ui/Toolbar';
 import Paper from 'material-ui/Paper';
-import SvgIcon from 'material-ui/SvgIcon';
 
-import Utils from '../utils.js';
+import { Meteor } from 'meteor/meteor';
+import { createContainer } from 'meteor/react-meteor-data';
+import { Orders } from '../api/orders.js';
 
-const ImportExportIcon = props => (
-  <SvgIcon {...props}>
-    <path d="M9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3z" />
-    <path d="M0 0h24v24H0z" fill="none" />
-  </SvgIcon>
-);
+import OrderRow from './OrderRow.jsx';
 
 class OrderTable extends React.Component {
-  constructor(props, context) {
-    super(props);
-    this.state = { ticker: context.tickers[context.selected], tradeNow: null };
-  }
-
-  componentDidMount() {
-    this.bindEvents();
-  }
-
-  getAmount() {
-    return this.props.total / this.state.ticker.last;
-  }
-
-  getFee() {
-    return (this.getAmount() * Utils.getFee(this.context.selected, 'buy')) / 100;
-  }
-
-  getRealAmount() {
-    return this.getAmount() - this.getFee();
-  }
-
-  getDraw() {
-    const drawBuy = (this.state.ticker.last * this.getAmount()) / this.getRealAmount();
-    return (drawBuy * (this.props.total + ((Utils.getFee(this.context.selected, 'sell') * this.props.total) / 100))) / this.props.total;
-  }
-
-  getTargetStop(target, stop) {
-    const targetResult = Number(this.getDraw() + ((target * this.getDraw()) / 100)).toFixed(8);
-    const stopResult = Number(this.getDraw() - ((stop * this.getDraw()) / 100)).toFixed(8);
-
-    return (<div>
-      <div style={{ display: 'inline-block' }}>
-        <div style={{ color: '#27892f' }}>{targetResult}</div>
-        <div style={{ color: '#c02a1d' }}>{stopResult}</div>
-      </div>
-      <ImportExportIcon style={{ cursor: 'pointer' }} onClick={() => this.tradeNow(targetResult, stopResult)} />
-    </div>);
-  }
-
-  tradeNow(targetResult, stopResult) {
-    this.setState({ tradeNow: {
-      amount: Number(this.getAmount()).toFixed(8),
-      total: this.props.total,
-      targetResult,
-      stopResult,
-    } });
-  }
-
-  bindEvents() {
-    this.context.session.subscribe('ticker', (ev) => {
-      if (this.context.selected === ev[0]) {
-        document.title = i18n.__('marketTitle', [`${ev[1]} ${ev[0]}`]);
-
-        this.setState({ ticker: {
-          last: ev[1],
-        } });
-      }
-    });
+  renderOrders() {
+    return this.props.orders.map(order => (
+      <OrderRow key={order._id} order={order} />
+    ));
   }
 
   render() {
@@ -94,14 +36,7 @@ class OrderTable extends React.Component {
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
-              <TableRow>
-                <TableRowColumn>{0}</TableRowColumn>
-                <TableRowColumn>{1}</TableRowColumn>
-                <TableRowColumn>{2}</TableRowColumn>
-                <TableRowColumn>{3}</TableRowColumn>
-                <TableRowColumn>{4}</TableRowColumn>
-                <TableRowColumn>{5}</TableRowColumn>
-              </TableRow>
+              {this.renderOrders()}
             </TableBody>
           </Table>
         </Paper>
@@ -111,13 +46,13 @@ class OrderTable extends React.Component {
 }
 
 OrderTable.propTypes = {
-  total: PropTypes.number,
+  orders: PropTypes.array.isRequired,
 };
 
-OrderTable.contextTypes = {
-  tickers: PropTypes.object,
-  session: PropTypes.object,
-  selected: PropTypes.string,
-};
+export default createContainer(() => {
+  Meteor.subscribe('orders');
 
-export default OrderTable;
+  return {
+    orders: Orders.find({}).fetch(),
+  };
+}, OrderTable);
